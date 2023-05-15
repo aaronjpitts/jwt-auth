@@ -13,15 +13,6 @@
       "email": "sun@makers99.com"
     }
   ],
-  "minimum-stability": "stable",
-  "require": {
-    "firebase/php-jwt": "^6.3"
-  },
-  "require-dev": {
-    "php": ">=7.4",
-    "phpunit/phpunit": "^9.5",
-    "guzzlehttp/guzzle": "^7.4"
-  },
   "scripts": {
     "test": "./vendor/bin/phpunit"
   },
