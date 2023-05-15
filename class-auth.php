@@ -274,8 +274,9 @@ class Auth {
 		$created       = time();
 		$expires       = $created + DAY_IN_SECONDS * 30;
 		$expires       = apply_filters( 'jwt_auth_refresh_expire', $expires, $created );
+    $http_only     = apply_filters( 'jwt_auth_refresh_http_only', true );
 
-		setcookie( 'refresh_token', $user->ID . '.' . $refresh_token, $expires, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true );
+		setcookie( 'refresh_token', $user->ID . '.' . $refresh_token, $expires, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), $http_only );
 
 		// Save new refresh token for the user, replacing the previous one.
 		// The refresh token is rotated for the passed device only, not affecting
