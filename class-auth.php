@@ -36,13 +36,6 @@ class Auth {
 	private $jwt_error = null;
 
 	/**
-	 * Collection of translate-able messages.
-	 *
-	 * @var array
-	 */
-	private $messages = array();
-
-	/**
 	 * The REST API slug.
 	 *
 	 * @var string
@@ -54,11 +47,6 @@ class Auth {
 	 */
 	public function __construct() {
 		$this->namespace = 'jwt-auth/v1';
-
-		$this->messages = array(
-			'jwt_auth_no_auth_header'  => __( 'Authorization header not found.', 'jwt-auth' ),
-			'jwt_auth_bad_auth_header' => __( 'Authorization header malformed.', 'jwt-auth' ),
-		);
 	}
 
 	/**
@@ -385,6 +373,10 @@ class Auth {
 	 * @return WP_REST_Response | Array Returns WP_REST_Response or token's $payload.
 	 */
 	public function validate_token( $return_response = true ) {
+		global $l10n;
+
+		$has_l10n = isset( $l10n[ 'jwt-auth' ] );
+
 		/**
 		 * Looking for the HTTP_AUTHORIZATION header, if not present just
 		 * return the user.
@@ -403,7 +395,7 @@ class Auth {
 					'success'    => false,
 					'statusCode' => 401,
 					'code'       => 'jwt_auth_no_auth_header',
-					'message'    => $this->messages['jwt_auth_no_auth_header'],
+					'message'    => $has_l10n ? __( 'Authorization header not found.', 'jwt-auth' ) : 'Authorization header not found.',
 					'data'       => array(),
 				),
 				401
@@ -422,7 +414,7 @@ class Auth {
 					'success'    => false,
 					'statusCode' => 401,
 					'code'       => 'jwt_auth_bad_auth_header',
-					'message'    => $this->messages['jwt_auth_bad_auth_header'],
+					'message'    => $has_l10n ? __( 'Authorization header malformed.', 'jwt-auth' ) : 'Authorization header malformed.',
 					'data'       => array(),
 				),
 				401
@@ -438,7 +430,7 @@ class Auth {
 					'success'    => false,
 					'statusCode' => 401,
 					'code'       => 'jwt_auth_bad_config',
-					'message'    => __( 'JWT is not configured properly.', 'jwt-auth' ),
+					'message'    => $has_l10n ? __( 'JWT is not configured properly.', 'jwt-auth' ) : 'JWT is not configured properly.',
 					'data'       => array(),
 				),
 				401
@@ -458,7 +450,7 @@ class Auth {
 						'success'    => false,
 						'statusCode' => 401,
 						'code'       => 'jwt_auth_bad_iss',
-						'message'    => __( 'The iss do not match with this server.', 'jwt-auth' ),
+						'message'    => $has_l10n ? __( 'The iss do not match with this server.', 'jwt-auth' ) : 'The iss do not match with this server.',
 						'data'       => array(),
 					),
 					401
@@ -473,7 +465,7 @@ class Auth {
 						'success'    => false,
 						'statusCode' => 401,
 						'code'       => 'jwt_auth_bad_request',
-						'message'    => __( 'User ID not found in the token.', 'jwt-auth' ),
+						'message'    => $has_l10n ? __( 'User ID not found in the token.', 'jwt-auth' ) : 'User ID not found in the token.',
 						'data'       => array(),
 					),
 					401
@@ -490,7 +482,7 @@ class Auth {
 						'success'    => false,
 						'statusCode' => 401,
 						'code'       => 'jwt_auth_invalid_token',
-						'message'    => __( "Invalid token", 'jwt-auth' ),
+						'message'    => $has_l10n ? __( "Invalid token", 'jwt-auth' ) : "Invalid token",
 						'data'       => array(),
 					),
 					401
@@ -507,7 +499,7 @@ class Auth {
 						'success'    => false,
 						'statusCode' => 401,
 						'code'       => 'jwt_auth_obsolete_token',
-						'message'    => __( 'Token is obsolete', 'jwt-auth' ),
+						'message'    => $has_l10n ? __( 'Token is obsolete', 'jwt-auth' ) : 'Token is obsolete',
 						'data'       => array(),
 					),
 					401
@@ -523,7 +515,7 @@ class Auth {
 				'success'    => true,
 				'statusCode' => 200,
 				'code'       => 'jwt_auth_valid_token',
-				'message'    => __( 'Token is valid', 'jwt-auth' ),
+				'message'    => $has_l10n ? __( 'Token is valid', 'jwt-auth' ) : 'Token is valid',
 				'data'       => array(),
 			);
 
